@@ -1,0 +1,35 @@
+local t = "" 
+local function fadeIn(audio)
+	audio:Play()
+	for i = 0,.5,.01 do
+		audio.Volume = i
+		wait(.1)
+	end
+end
+
+local function fadeOut(audio)
+	for i = .5,0,-.01 do
+		audio.Volume = i
+		wait(.1)
+	end
+	audio:Stop()
+end
+
+repeat
+	if game.Lighting:GetMinutesAfterMidnight() < 6*60 or game.Lighting:GetMinutesAfterMidnight() > 18*60 then
+		lastT = t
+		t = "night"
+	else
+		lastT = t
+		t = "day"
+	end
+	if lastT ~= t then
+		if t == "night" then
+			fadeOut(script.day)
+			fadeIn(script.night)
+		elseif t == "day" then
+			fadeOut(script.night)
+			fadeIn(script.day)
+		end
+	end
+until not wait(1)
